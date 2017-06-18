@@ -1,0 +1,11 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Netpoint Admin</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<ul id="client-list">
+		<li *ngFor="let client of loadClients | async">{{client.ipHostNumber}}</li>
+	</ul>
+</ion-content>
