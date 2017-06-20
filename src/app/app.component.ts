@@ -1,21 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform } from 'ionic-angular';
-import { ClientsPage } from '../pages/clients/clients';
-//import { ClientService } from './shared/client.service';
+import { Platform, NavController } from 'ionic-angular';
+import { ClientListPage } from '../pages/clientlist/clientlist';
+import { ClientService } from './shared/client.service';
 
 @Component({
 	templateUrl: 'app.html'
 })
-
+/**
+ * Example for an async binding of a BehaviorSubject to a *ngFor template (see clientlist.html)
+ * In this case there is no need of an async binding because there only the loading of the http.get promise is to be resolved.
+ * 
+*/
 export class NpAdminApp implements OnInit {
-	rootPage:any = ClientsPage;
-	public clients = Array<Object>();
-	//@ViewChild('myNav') nav: NavController;
+	rootPage:any = ClientListPage;
 	
-	constructor(platform: Platform) {
+	//@ViewChild('myNav') nav: NavController;
+	constructor(platform: Platform, clientService: ClientService) {
 		platform.ready().then(() => {
 			console.log("platform.ready()");
-		});
+			clientService.loadAll();
+			//this.nav.setRoot(this.nav.getActive().component);
+		})
 	}
 	
 	ngOnInit() {

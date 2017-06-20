@@ -4,14 +4,14 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpModule } from '@angular/http';
 
 import { NpAdminApp } from './app.component';
-import { ClientsPage } from '../pages/clients/clients';
+import { ClientListPage } from '../pages/clientlist/clientlist';
 
 import { ClientService } from './shared/client.service';
 
 @NgModule({
   declarations: [
     NpAdminApp,
-    ClientsPage
+    ClientListPage
   ],
   imports: [
     BrowserModule,
@@ -21,11 +21,12 @@ import { ClientService } from './shared/client.service';
   bootstrap: [IonicApp],
   entryComponents: [
     NpAdminApp,
-    ClientsPage
+    ClientListPage
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ClientService
+    ClientService,
+    NpAdminApp
   ]
 })
 export class AppModule {}
