@@ -2,7 +2,6 @@ import {Http, Response} from '@angular/http';
 import {Injectable} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
 import 'rxjs/add/operator/map'; // add map function to observable
 
 export interface Client {
@@ -41,5 +40,12 @@ export class ClientService {
 			this.dataStore.clients = data;
 			this._clients.next(Object.assign({}, this.dataStore).clients);
 		}, error => console.log('Could not load clients.'));
+	}
+	
+	filterClients(searchTerm) {
+		console.log("filterClients: " + searchTerm);
+		let cl = this.dataStore.clients.filter((client) => { return client.ipHostNumber.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 });
+		console.log("found: " + cl.length);
+		this._clients.next(cl);
 	}
 }

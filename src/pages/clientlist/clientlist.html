@@ -6,10 +6,16 @@
 
 <ion-content padding>
 	<p *ngIf = 'dataLoading'>Loading...</p>
+	<ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl"></ion-searchbar>
 	
-	<ul id="client-list">
-		<!--<li *ngFor="let client of clients">{{client.ipHostNumber}}</li>-->
-		<li *ngFor="let client of clients | async">{{client.ipHostNumber}}</li>
-	</ul>
+	<div *ngIf="searching" class="spinner-container">
+		<ion-spinner></ion-spinner>
+	</div>
+	
+	<ion-list>
+		<ion-item *ngFor="let client of clients | async">
+			{{client.ipHostNumber}}
+		</ion-item>
+	</ion-list>
 	
 </ion-content>
