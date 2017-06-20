@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map'; // add map function to observable
 export interface Client {
 	dn: string;
 	ipHostNumber: string;
-	macAdress: string | Array<string>;
+	macAddress: string | Array<string>;
 	cn: string;
 }
 
@@ -37,15 +37,42 @@ export class ClientService {
 	 */ 
 	loadAll() {
 		this.http.get(`${this.baseUrl}`).map((res: Response) => res.json()).subscribe(data => {
-			this.dataStore.clients = data;
+			this.dataStore.clients = this.sortClients(data,"cn");
 			this._clients.next(Object.assign({}, this.dataStore).clients);
 		}, error => console.log('Could not load clients.'));
 	}
 	
 	filterClients(searchTerm) {
 		console.log("filterClients: " + searchTerm);
-		let cl = this.dataStore.clients.filter((client) => { return client.ipHostNumber.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 });
+		let col: string = "cn";
+		let cl = this.dataStore.clients.filter((client) => { 
+			
+			if (client.cn.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+				col = "cn";
+				return -1;
+			}
+			if (client.macAddress.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+				col = "macAddress";
+				return -1;
+			}
+			if (client.ipHostNumber.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+				col = "ipHostNumber";
+				return -1;
+			}
+		});
 		console.log("found: " + cl.length);
-		this._clients.next(cl);
+		this._clients.next(this.sortClients(cl,col));
+	}
+	
+	sortClients(data, col: string, asc?:boolean) {
+		return data.sort((a,b) => { 
+			if ( a[col] > b[col] ) {
+				return 1;
+			}
+			if ( a[col] < b[col] )  {
+				return -1;
+			}
+			return 0;
+		});
 	}
 }

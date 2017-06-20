@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform, NavController } from 'ionic-angular';
+import { Platform } from 'ionic-angular';
 import { ClientListPage } from '../pages/clientlist/clientlist';
 import { ClientService } from './shared/client.service';
 
