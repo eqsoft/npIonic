@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content padding>
-	<p id="loading">Loading...</p>
+	<p *ngIf = 'dataLoading'>Loading...</p>
 	
 	<ul id="client-list">
 		<!--<li *ngFor="let client of clients">{{client.ipHostNumber}}</li>-->

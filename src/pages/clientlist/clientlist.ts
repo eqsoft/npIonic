@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-//import { NpAdminApp } from '../../app/app.component';
 import { ClientService, Client } from '../../app/shared/client.service';
 
 @Component({
@@ -10,12 +9,13 @@ import { ClientService, Client } from '../../app/shared/client.service';
 })
 export class ClientListPage {
 	public clients: Observable<Client[]>;
-	//private _clients: BehaviorSubject<Client[]>; 
+	public dataLoading: boolean = false;
+	
 	constructor( private navCtrl: NavController, clientService: ClientService ) {
 		console.log("ClientsPage()");
 		this.clients = clientService.clients;
-		this.clients.subscribe( data => console.log("loaded: " + data.length), error => console.log("error") ); 
-		//this._clients = <BehaviorSubject<Client[]>>new BehaviorSubject([]);
+		this.clients.subscribe( data => {
+			this.dataLoading = (data.length == 0);
+		}); 
 	}
-	
 }

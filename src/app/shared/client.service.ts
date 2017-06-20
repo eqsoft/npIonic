@@ -18,10 +18,10 @@ export interface DataStore {
 
 @Injectable()
 export class ClientService {
-	clients: Observable<Client[]>;
-	private _clients: BehaviorSubject<Client[]>;
-	public dataStore : DataStore;
 	private baseUrl: string;
+	public dataStore : DataStore;
+	public clients: Observable<Client[]>;
+	private _clients: BehaviorSubject<Client[]>;
 	
 	constructor(private http: Http) { 
 		this.baseUrl = '../assets/clients.json'; 

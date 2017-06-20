@@ -14,12 +14,11 @@ import { ClientService } from './shared/client.service';
 export class NpAdminApp implements OnInit {
 	rootPage:any = ClientListPage;
 	
-	//@ViewChild('myNav') nav: NavController;
 	constructor(platform: Platform, clientService: ClientService) {
 		platform.ready().then(() => {
 			console.log("platform.ready()");
 			clientService.loadAll();
-			//this.nav.setRoot(this.nav.getActive().component);
+			//this.nav.setRoot(this.nav.getActive().component); // not needed anymore
 		})
 	}
 	
