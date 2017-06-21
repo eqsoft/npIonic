@@ -11,7 +11,7 @@ import { ClientService } from './shared/client.service';
 @NgModule({
   declarations: [
     NpAdminApp,
-    ClientListPage
+    ClientListPage,
   ],
   imports: [
     BrowserModule,

@@ -3,10 +3,12 @@ import {Injectable} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map'; // add map function to observable
+import { Address4 } from 'ip-address';
 
 export interface Client {
 	dn: string;
 	ipHostNumber: string;
+	hexIp: string;
 	macAddress: string | Array<string>;
 	cn: string;
 }
@@ -36,10 +38,25 @@ export class ClientService {
 	 * The rootPage subscribes to async loading with *ngFor, so no reloading (nav.setRoot in app.component) is required. 
 	 */ 
 	loadAll() {
-		this.http.get(`${this.baseUrl}`).map((res: Response) => res.json()).subscribe(data => {
-			this.dataStore.clients = this.sortClients(data,"cn");
-			this._clients.next(Object.assign({}, this.dataStore).clients);
-		}, error => console.log('Could not load clients.'));
+		this.http.get(`${this.baseUrl}`).map((res: Response) => res.json()).subscribe(
+			data => this.afterLoaded(this.addHexAddress(data)),
+			error => console.log('Could not load clients.')
+		);
+	}
+	
+	afterLoaded(data) {
+		this.dataStore.clients = this.sortClients(data,"cn");
+		this._clients.next(Object.assign({}, this.dataStore).clients);
+	}
+	
+	addHexAddress(data) {
+		
+		return data.map((o) => {
+			console.log(o.cn);
+			//return item;
+			o['hexIp'] = new Address4(o.ipHostNumber).toHex().replace(/:/g,'').toUpperCase()
+			return o;
+		});
 	}
 	
 	filterClients(searchTerm) {
@@ -57,6 +74,10 @@ export class ClientService {
 			}
 			if (client.ipHostNumber.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
 				col = "ipHostNumber";
+				return -1;
+			}
+			if (client.hexIp.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+				col = "hexIp";
 				return -1;
 			}
 		});

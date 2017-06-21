@@ -15,11 +15,13 @@
 		<ion-row class="grid-header">
 			<ion-col>Host</ion-col>
 			<ion-col>Ip</ion-col>
+			<ion-col>Hex</ion-col>
 			<ion-col>MAC</ion-col>
 		</ion-row>
 		<ion-row *ngFor="let client of clients | async" class="grid-row">
 			<ion-col>{{client.cn}}</ion-col>
 			<ion-col>{{client.ipHostNumber}}</ion-col>
+			<ion-col>{{client.hexIp}}</ion-col>
 			<ion-col>{{client.macAddress.toString()}}</ion-col>
 		</ion-row>
 	</ion-grid>
